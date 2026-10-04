@@ -1,0 +1,444 @@
+{
+  "corpus": "validation/cases.json",
+  "cases_total": 14,
+  "cases_evaluated": 14,
+  "cases_failed": 0,
+  "failures": [],
+  "acuity": {
+    "accuracy": 0.9286,
+    "correct": 13,
+    "under_calls": []
+  },
+  "esi": {
+    "in_range_rate": 1.0,
+    "in_range": 14,
+    "exact_rate": 0.5,
+    "exact": 7,
+    "mean_abs_error": 0.5,
+    "under_triage": [],
+    "over_triage": []
+  },
+  "red_flags": {
+    "required": 8,
+    "caught": 8,
+    "recall": 1.0,
+    "missed": [],
+    "false_positives": []
+  },
+  "specialty": {
+    "accuracy": 0.7857,
+    "correct": 11,
+    "confusion": {
+      "internal_medicine": {
+        "pulmonology": 1,
+        "nephrology": 1,
+        "orthopaedics": 1
+      }
+    }
+  },
+  "confidence": {
+    "low_confidence_threshold": 0.35,
+    "cases_below_threshold": [
+      "ankle-sprain"
+    ],
+    "scale": "normalised: (top_prob - uniform) / (1 - uniform)",
+    "mean_confidence_when_esi_correct": 0.7695,
+    "mean_confidence_when_esi_wrong": 0.7698,
+    "mean_confidence_norm_when_esi_correct": 0.7118,
+    "mean_confidence_norm_when_esi_wrong": 0.6773,
+    "per_question_mean": {
+      "acuity": 0.9998,
+      "esi": 0.8195,
+      "esi_override": 0.931,
+      "imaging": 0.9737,
+      "is_emergency_admission": 1.0,
+      "needs_consult": 0.9752,
+      "patient_type": 0.9997,
+      "specialty": 0.9712,
+      "suicidal_risk": 1.0,
+      "tele_followup_instead": 0.9818,
+      "translator": 0.9997
+    },
+    "per_question_mean_norm": {
+      "acuity": 0.9996,
+      "esi": 0.7743,
+      "esi_override": 0.8965,
+      "imaging": 0.9684,
+      "is_emergency_admission": 0.9999,
+      "needs_consult": 0.9503,
+      "patient_type": 0.9995,
+      "specialty": 0.9693,
+      "suicidal_risk": 1.0,
+      "tele_followup_instead": 0.9636,
+      "translator": 0.9995
+    }
+  },
+  "latency": {
+    "mean_ms_per_case": 25182.9,
+    "max_ms_per_case": 25712.0,
+    "mean_ms_per_question": 2289.4
+  },
+  "degraded": {
+    "acs-inferior": [
+      "specialty: 1.000 of the probability mass was inside the 20-token logprob window; probabilities for the unobserved labels are renormalised bounds, not measurements",
+      "model ESI 3 less urgent than the applied ESI 1 (floor+override)"
+    ],
+    "stroke-left-mca": [
+      "specialty: 1.000 of the probability mass was inside the 20-token logprob window; probabilities for the unobserved labels are renormalised bounds, not measurements",
+      "model ESI 3 less urgent than the applied ESI 1 (floor+override)"
+    ],
+    "anaphylaxis": [
+      "specialty: 1.000 of the probability mass was inside the 20-token logprob window; probabilities for the unobserved labels are renormalised bounds, not measurements"
+    ],
+    "septic-shock": [
+      "specialty: 1.000 of the probability mass was inside the 20-token logprob window; probabilities for the unobserved labels are renormalised bounds, not measurements"
+    ],
+    "gi-bleed": [
+      "specialty: 1.000 of the probability mass was inside the 20-token logprob window; probabilities for the unobserved labels are renormalised bounds, not measurements"
+    ],
+    "paediatric-sepsis": [
+      "model ESI 3 less urgent than the applied ESI 1 (floor+override)"
+    ],
+    "overdose-paracetamol": [
+      "specialty: 1.000 of the probability mass was inside the 20-token logprob window; probabilities for the unobserved labels are renormalised bounds, not measurements",
+      "model ESI 3 less urgent than the applied ESI 1 (floor+override)"
+    ],
+    "asthma-severe": [
+      "specialty: 1.000 of the probability mass was inside the 20-token logprob window; probabilities for the unobserved labels are renormalised bounds, not measurements",
+      "model ESI 3 less urgent than the applied ESI 1 (floor+override)"
+    ],
+    "testicular-torsion": [
+      "model ESI 3 less urgent than the applied ESI 2 (override)"
+    ],
+    "renal-colic": [
+      "specialty: 1.000 of the probability mass was inside the 20-token logprob window; probabilities for the unobserved labels are renormalised bounds, not measurements",
+      "model ESI 3 less urgent than the applied ESI 2 (override)"
+    ],
+    "distal-radius-fracture": [
+      "specialty: 1.000 of the probability mass was inside the 20-token logprob window; probabilities for the unobserved labels are renormalised bounds, not measurements",
+      "model ESI 4 less urgent than the applied ESI 3 (override)"
+    ],
+    "sore-throat": [
+      "specialty: 1.000 of the probability mass was inside the 20-token logprob window; probabilities for the unobserved labels are renormalised bounds, not measurements"
+    ],
+    "ankle-sprain": [
+      "specialty: 1.000 of the probability mass was inside the 20-token logprob window; probabilities for the unobserved labels are renormalised bounds, not measurements"
+    ]
+  },
+  "rows": [
+    {
+      "id": "acs-inferior",
+      "acuity_expected": "acute",
+      "acuity_got": "acute",
+      "esi_expected": 1,
+      "esi_range": [
+        1,
+        2
+      ],
+      "esi_got": 1,
+      "esi_source": "floor+override",
+      "red_flag_expected": true,
+      "red_flag_got": true,
+      "specialty_expected": "cardiology",
+      "specialty_got": "cardiology",
+      "min_confidence": 0.6443,
+      "min_confidence_norm": 0.5554,
+      "requires_human_review": true,
+      "degraded": [
+        "specialty: 1.000 of the probability mass was inside the 20-token logprob window; probabilities for the unobserved labels are renormalised bounds, not measurements",
+        "model ESI 3 less urgent than the applied ESI 1 (floor+override)"
+      ]
+    },
+    {
+      "id": "stroke-left-mca",
+      "acuity_expected": "acute",
+      "acuity_got": "acute",
+      "esi_expected": 1,
+      "esi_range": [
+        1,
+        2
+      ],
+      "esi_got": 1,
+      "esi_source": "floor+override",
+      "red_flag_expected": true,
+      "red_flag_got": true,
+      "specialty_expected": "neurology",
+      "specialty_got": "neurology",
+      "min_confidence": 0.8705,
+      "min_confidence_norm": 0.8381,
+      "requires_human_review": true,
+      "degraded": [
+        "specialty: 1.000 of the probability mass was inside the 20-token logprob window; probabilities for the unobserved labels are renormalised bounds, not measurements",
+        "model ESI 3 less urgent than the applied ESI 1 (floor+override)"
+      ]
+    },
+    {
+      "id": "anaphylaxis",
+      "acuity_expected": "acute",
+      "acuity_got": "acute",
+      "esi_expected": 1,
+      "esi_range": [
+        1,
+        1
+      ],
+      "esi_got": 1,
+      "esi_source": "floor+override",
+      "red_flag_expected": true,
+      "red_flag_got": true,
+      "specialty_expected": "internal_medicine",
+      "specialty_got": "pulmonology",
+      "min_confidence": 0.818,
+      "min_confidence_norm": 0.7725,
+      "requires_human_review": true,
+      "degraded": [
+        "specialty: 1.000 of the probability mass was inside the 20-token logprob window; probabilities for the unobserved labels are renormalised bounds, not measurements"
+      ]
+    },
+    {
+      "id": "septic-shock",
+      "acuity_expected": "acute",
+      "acuity_got": "acute",
+      "esi_expected": 1,
+      "esi_range": [
+        1,
+        2
+      ],
+      "esi_got": 1,
+      "esi_source": "floor+override",
+      "red_flag_expected": true,
+      "red_flag_got": true,
+      "specialty_expected": "internal_medicine",
+      "specialty_got": "nephrology",
+      "min_confidence": 0.6797,
+      "min_confidence_norm": 0.5996,
+      "requires_human_review": true,
+      "degraded": [
+        "specialty: 1.000 of the probability mass was inside the 20-token logprob window; probabilities for the unobserved labels are renormalised bounds, not measurements"
+      ]
+    },
+    {
+      "id": "gi-bleed",
+      "acuity_expected": "acute",
+      "acuity_got": "acute",
+      "esi_expected": 2,
+      "esi_range": [
+        1,
+        2
+      ],
+      "esi_got": 1,
+      "esi_source": "floor+override",
+      "red_flag_expected": true,
+      "red_flag_got": true,
+      "specialty_expected": "gastroenterology",
+      "specialty_got": "gastroenterology",
+      "min_confidence": 0.9799,
+      "min_confidence_norm": 0.9698,
+      "requires_human_review": true,
+      "degraded": [
+        "specialty: 1.000 of the probability mass was inside the 20-token logprob window; probabilities for the unobserved labels are renormalised bounds, not measurements"
+      ]
+    },
+    {
+      "id": "paediatric-sepsis",
+      "acuity_expected": "acute",
+      "acuity_got": "acute",
+      "esi_expected": 1,
+      "esi_range": [
+        1,
+        2
+      ],
+      "esi_got": 1,
+      "esi_source": "floor+override",
+      "red_flag_expected": true,
+      "red_flag_got": true,
+      "specialty_expected": "paediatrics",
+      "specialty_got": "paediatrics",
+      "min_confidence": 0.755,
+      "min_confidence_norm": 0.6325,
+      "requires_human_review": true,
+      "degraded": [
+        "model ESI 3 less urgent than the applied ESI 1 (floor+override)"
+      ]
+    },
+    {
+      "id": "overdose-paracetamol",
+      "acuity_expected": "acute",
+      "acuity_got": "acute",
+      "esi_expected": 2,
+      "esi_range": [
+        1,
+        2
+      ],
+      "esi_got": 1,
+      "esi_source": "floor+override",
+      "red_flag_expected": true,
+      "red_flag_got": true,
+      "specialty_expected": "psychiatry",
+      "specialty_got": "psychiatry",
+      "min_confidence": 0.8275,
+      "min_confidence_norm": 0.7844,
+      "requires_human_review": true,
+      "degraded": [
+        "specialty: 1.000 of the probability mass was inside the 20-token logprob window; probabilities for the unobserved labels are renormalised bounds, not measurements",
+        "model ESI 3 less urgent than the applied ESI 1 (floor+override)"
+      ]
+    },
+    {
+      "id": "asthma-severe",
+      "acuity_expected": "acute",
+      "acuity_got": "acute",
+      "esi_expected": 2,
+      "esi_range": [
+        1,
+        2
+      ],
+      "esi_got": 1,
+      "esi_source": "floor+override",
+      "red_flag_expected": true,
+      "red_flag_got": true,
+      "specialty_expected": "pulmonology",
+      "specialty_got": "pulmonology",
+      "min_confidence": 0.5286,
+      "min_confidence_norm": 0.4107,
+      "requires_human_review": true,
+      "degraded": [
+        "specialty: 1.000 of the probability mass was inside the 20-token logprob window; probabilities for the unobserved labels are renormalised bounds, not measurements",
+        "model ESI 3 less urgent than the applied ESI 1 (floor+override)"
+      ]
+    },
+    {
+      "id": "testicular-torsion",
+      "acuity_expected": "acute",
+      "acuity_got": "acute",
+      "esi_expected": 2,
+      "esi_range": [
+        2,
+        2
+      ],
+      "esi_got": 2,
+      "esi_source": "override",
+      "red_flag_expected": false,
+      "red_flag_got": false,
+      "specialty_expected": "general_surgery",
+      "specialty_got": "general_surgery",
+      "min_confidence": 0.951,
+      "min_confidence_norm": 0.9387,
+      "requires_human_review": false,
+      "degraded": [
+        "model ESI 3 less urgent than the applied ESI 2 (override)"
+      ]
+    },
+    {
+      "id": "renal-colic",
+      "acuity_expected": "acute",
+      "acuity_got": "acute",
+      "esi_expected": 3,
+      "esi_range": [
+        2,
+        3
+      ],
+      "esi_got": 2,
+      "esi_source": "override",
+      "red_flag_expected": false,
+      "red_flag_got": false,
+      "specialty_expected": "nephrology",
+      "specialty_got": "nephrology",
+      "min_confidence": 0.7068,
+      "min_confidence_norm": 0.6482,
+      "requires_human_review": false,
+      "degraded": [
+        "specialty: 1.000 of the probability mass was inside the 20-token logprob window; probabilities for the unobserved labels are renormalised bounds, not measurements",
+        "model ESI 3 less urgent than the applied ESI 2 (override)"
+      ]
+    },
+    {
+      "id": "distal-radius-fracture",
+      "acuity_expected": "non_acute",
+      "acuity_got": "acute",
+      "esi_expected": 4,
+      "esi_range": [
+        3,
+        4
+      ],
+      "esi_got": 3,
+      "esi_source": "override",
+      "red_flag_expected": false,
+      "red_flag_got": false,
+      "specialty_expected": "orthopaedics",
+      "specialty_got": "orthopaedics",
+      "min_confidence": 0.9181,
+      "min_confidence_norm": 0.8976,
+      "requires_human_review": false,
+      "degraded": [
+        "specialty: 1.000 of the probability mass was inside the 20-token logprob window; probabilities for the unobserved labels are renormalised bounds, not measurements",
+        "model ESI 4 less urgent than the applied ESI 3 (override)"
+      ]
+    },
+    {
+      "id": "sore-throat",
+      "acuity_expected": "non_acute",
+      "acuity_got": "non_acute",
+      "esi_expected": 5,
+      "esi_range": [
+        4,
+        5
+      ],
+      "esi_got": 4,
+      "esi_source": "model",
+      "red_flag_expected": false,
+      "red_flag_got": false,
+      "specialty_expected": "ent",
+      "specialty_got": "ent",
+      "min_confidence": 0.7664,
+      "min_confidence_norm": 0.708,
+      "requires_human_review": false,
+      "degraded": [
+        "specialty: 1.000 of the probability mass was inside the 20-token logprob window; probabilities for the unobserved labels are renormalised bounds, not measurements"
+      ]
+    },
+    {
+      "id": "chronic-back-pain",
+      "acuity_expected": "non_acute",
+      "acuity_got": "non_acute",
+      "esi_expected": 5,
+      "esi_range": [
+        4,
+        5
+      ],
+      "esi_got": 5,
+      "esi_source": "model",
+      "red_flag_expected": false,
+      "red_flag_got": false,
+      "specialty_expected": "internal_medicine",
+      "specialty_got": "orthopaedics",
+      "min_confidence": 0.6679,
+      "min_confidence_norm": 0.6458,
+      "requires_human_review": false,
+      "degraded": []
+    },
+    {
+      "id": "ankle-sprain",
+      "acuity_expected": "non_acute",
+      "acuity_got": "non_acute",
+      "esi_expected": 5,
+      "esi_range": [
+        4,
+        5
+      ],
+      "esi_got": 4,
+      "esi_source": "model",
+      "red_flag_expected": false,
+      "red_flag_got": false,
+      "specialty_expected": "orthopaedics",
+      "specialty_got": "orthopaedics",
+      "min_confidence": 0.6612,
+      "min_confidence_norm": 0.3224,
+      "requires_human_review": true,
+      "degraded": [
+        "specialty: 1.000 of the probability mass was inside the 20-token logprob window; probabilities for the unobserved labels are renormalised bounds, not measurements"
+      ]
+    }
+  ],
+  "blocking": [],
+  "pass": true
+}

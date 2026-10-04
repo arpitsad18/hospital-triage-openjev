@@ -1,0 +1,182 @@
+{
+  "_comment": [
+    "Labelled ED triage corpus. Every case is synthetic and de-identified.",
+    "esi_range is the CLINICALLY ACCEPTABLE band, not a single 'right answer':",
+    "between two trained triage nurses a one-level disagreement is normal.",
+    "esi_code_expected is the reference level used for the under-triage rate,",
+    "which is the metric that actually matters -- labelling a sick patient as",
+    "less urgent is the failure mode this whole system exists to prevent.",
+    "expected_red_flag is what the DETERMINISTIC screen must catch, and",
+    "red_flag_required=true marks cases where missing it is a safety defect."
+  ],
+  "cases": [
+    {
+      "id": "acs-inferior",
+      "narrative": "58M, sudden crushing central chest pain 40 min, radiating to left arm and jaw, cold sweat, nausea, feels like a heavy weight on the chest. Known smoker and hypertensive.",
+      "vitals": {"age": 58, "sbp": 92, "hr": 118, "rr": 24, "spo2": 94},
+      "esi_code_expected": 1,
+      "esi_range": [1, 2],
+      "expected_acuity": "acute",
+      "expected_red_flag": true,
+      "red_flag_required": true,
+      "expected_specialty": "cardiology",
+      "note": "Textbook ACS with haemodynamic compromise."
+    },
+    {
+      "id": "stroke-left-mca",
+      "narrative": "71F, sudden onset right sided weakness and slurred speech noticed 50 minutes ago while cooking. Face drooping on the right. No head injury.",
+      "vitals": {"age": 71, "sbp": 168, "hr": 88, "spo2": 97},
+      "esi_code_expected": 1,
+      "esi_range": [1, 2],
+      "expected_acuity": "acute",
+      "expected_red_flag": true,
+      "red_flag_required": true,
+      "expected_specialty": "neurology",
+      "note": "Within the thrombolysis window; time-critical."
+    },
+    {
+      "id": "anaphylaxis",
+      "narrative": "24F, 15 minutes after a bee sting: swollen lips and tongue, widespread hives, audible wheeze, feeling of throat closing, dizzy on standing.",
+      "vitals": {"age": 24, "sbp": 84, "hr": 132, "rr": 30, "spo2": 89},
+      "esi_code_expected": 1,
+      "esi_range": [1, 1],
+      "expected_acuity": "acute",
+      "expected_red_flag": true,
+      "red_flag_required": true,
+      "expected_specialty": "internal_medicine",
+      "note": "Airway threat; adrenaline now."
+    },
+    {
+      "id": "septic-shock",
+      "narrative": "66M, fever and rigors for two days, now confused and drowsy. Looks very unwell, mottled knees, not passing urine since yesterday.",
+      "vitals": {"age": 66, "sbp": 78, "hr": 128, "rr": 28, "temp": 39.4, "spo2": 92, "gcs": 12},
+      "esi_code_expected": 1,
+      "esi_range": [1, 2],
+      "expected_acuity": "acute",
+      "expected_red_flag": true,
+      "red_flag_required": true,
+      "expected_specialty": "internal_medicine",
+      "note": "Septic shock with organ dysfunction."
+    },
+    {
+      "id": "gi-bleed",
+      "narrative": "63M, vomiting large amounts of fresh blood twice this morning, black tarry stools for two days, light headed and sweaty on standing.",
+      "vitals": {"age": 63, "sbp": 96, "hr": 112, "spo2": 96},
+      "esi_code_expected": 2,
+      "esi_range": [1, 2],
+      "expected_acuity": "acute",
+      "expected_red_flag": true,
+      "red_flag_required": true,
+      "expected_specialty": "gastroenterology",
+      "note": "Active upper GI haemorrhage."
+    },
+    {
+      "id": "paediatric-sepsis",
+      "narrative": "9 week old infant brought with fever, not feeding since this morning and floppy when picked up. Mother says the baby is grunting.",
+      "vitals": {"age": 0.2, "hr": 186, "rr": 62, "temp": 38.6, "spo2": 93},
+      "esi_code_expected": 1,
+      "esi_range": [1, 2],
+      "expected_acuity": "acute",
+      "expected_red_flag": true,
+      "red_flag_required": true,
+      "expected_specialty": "paediatrics",
+      "note": "Neonate/infant fever plus not feeding and floppy -- always high risk."
+    },
+    {
+      "id": "overdose-paracetamol",
+      "narrative": "19F brought by friend after taking about 30 paracetamol tablets four hours ago in a deliberate overdose. Now nauseated and saying she wants to die.",
+      "vitals": {"age": 19, "sbp": 108, "hr": 96, "spo2": 98},
+      "esi_code_expected": 2,
+      "esi_range": [1, 2],
+      "expected_acuity": "acute",
+      "expected_red_flag": true,
+      "red_flag_required": true,
+      "expected_specialty": "psychiatry",
+      "note": "Both a toxicological and a self-harm emergency."
+    },
+    {
+      "id": "asthma-severe",
+      "narrative": "31F, known asthmatic, worsening breathlessness overnight, now cannot complete a sentence, using her inhaler every few minutes, no relief.",
+      "vitals": {"age": 31, "sbp": 128, "hr": 124, "rr": 30, "spo2": 91},
+      "esi_code_expected": 2,
+      "esi_range": [1, 2],
+      "expected_acuity": "acute",
+      "expected_red_flag": true,
+      "red_flag_required": true,
+      "expected_specialty": "pulmonology",
+      "note": "Severe acute asthma, hypoxia, speaking in fragments."
+    },
+    {
+      "id": "testicular-torsion",
+      "narrative": "16M, sudden severe left testicular pain for three hours, woke him from sleep, tender and high riding on examination, no trauma, vomited once.",
+      "vitals": {"age": 16, "sbp": 132, "hr": 92, "spo2": 99},
+      "esi_code_expected": 2,
+      "esi_range": [2, 2],
+      "expected_acuity": "acute",
+      "expected_red_flag": false,
+      "red_flag_required": false,
+      "expected_specialty": "general_surgery",
+      "note": "Viable in a ~6 hour window; needs surgery, not resuscitation."
+    },
+    {
+      "id": "renal-colic",
+      "narrative": "42M, severe colicky left flank pain radiating to the groin since last night, vomited twice, no fever, pain comes in waves.",
+      "vitals": {"age": 42, "sbp": 138, "hr": 98, "temp": 36.9, "spo2": 99},
+      "esi_code_expected": 3,
+      "esi_range": [2, 3],
+      "expected_acuity": "acute",
+      "expected_red_flag": false,
+      "red_flag_required": false,
+      "expected_specialty": "nephrology",
+      "note": "Very painful but physiologically stable."
+    },
+    {
+      "id": "distal-radius-fracture",
+      "narrative": "27F, slipped on a wet floor, fell on outstretched right hand. Swollen deformed painful right wrist, no head injury, no loss of consciousness, neurovascularly intact.",
+      "vitals": {"age": 27, "sbp": 124, "hr": 84, "spo2": 99},
+      "esi_code_expected": 4,
+      "esi_range": [3, 4],
+      "expected_acuity": "non_acute",
+      "expected_red_flag": false,
+      "red_flag_required": false,
+      "expected_specialty": "orthopaedics",
+      "note": "Single resource (X-ray, possibly reduction)."
+    },
+    {
+      "id": "sore-throat",
+      "narrative": "23M, sore throat and mild fever for three days, able to eat and drink, no difficulty breathing or swallowing, no drooling, no neck swelling.",
+      "vitals": {"age": 23, "temp": 37.9, "sbp": 122, "hr": 82, "spo2": 99},
+      "esi_code_expected": 5,
+      "esi_range": [4, 5],
+      "expected_acuity": "non_acute",
+      "expected_red_flag": false,
+      "red_flag_required": false,
+      "expected_specialty": "ent",
+      "note": "Explicitly documented negatives make airway risk low."
+    },
+    {
+      "id": "chronic-back-pain",
+      "narrative": "49F, long standing lower back pain, unchanged for weeks, no trauma, no numbness, no weakness, no problems passing urine, wants a medication review.",
+      "vitals": {"age": 49, "sbp": 130, "hr": 76, "spo2": 98},
+      "esi_code_expected": 5,
+      "esi_range": [4, 5],
+      "expected_acuity": "non_acute",
+      "expected_red_flag": false,
+      "red_flag_required": false,
+      "expected_specialty": "internal_medicine",
+      "note": "Chronic, stable, no red flags -- clinic or telehealth."
+    },
+    {
+      "id": "ankle-sprain",
+      "narrative": "20M, twisted left ankle playing football two hours ago, mild swelling, can partially weight bear, no deformity, no bony tenderness posteriorly, no head injury.",
+      "vitals": {"age": 20, "sbp": 118, "hr": 78, "spo2": 99},
+      "esi_code_expected": 5,
+      "esi_range": [4, 5],
+      "expected_acuity": "non_acute",
+      "expected_red_flag": false,
+      "red_flag_required": false,
+      "expected_specialty": "orthopaedics",
+      "note": "May not need imaging at all."
+    }
+  ]
+}

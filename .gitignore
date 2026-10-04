@@ -1,0 +1,30 @@
+# Python
+__pycache__/
+*.py[cod]
+*.egg-info/
+.eggs/
+build/
+dist/
+
+# Environments
+.venv/
+venv/
+env/
+
+# Test / tooling caches
+.pytest_cache/
+.coverage
+htmlcov/
+.mypy_cache/
+.ruff_cache/
+
+# Local model + runtime artifacts
+*.log
+*.bin
+*.gguf
+
+# Editor / OS
+.vscode/
+.idea/
+.DS_Store
+Thumbs.db

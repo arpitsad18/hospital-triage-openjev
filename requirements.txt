@@ -1,0 +1,5 @@
+# Runtime
+openjev>=0.1.0
+
+# Optional, for the pytest suite
+pytest>=7.0

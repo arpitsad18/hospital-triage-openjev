@@ -1,0 +1,45 @@
+[Unit]
+Description=Triage OpenJev advisory decision-support API
+Documentation=file:///opt/triage-openjev/README.md
+After=network-online.target ollama.service
+Wants=network-online.target ollama.service
+
+[Service]
+Type=simple
+User=triage
+Group=triage
+
+# All files live under /opt/triage-openjev; the working directory matters
+# because the engine imports ``src.triage`` as a package.
+WorkingDirectory=/opt/triage-openjev
+
+# The API and the engine both reach the model over loopback. Point these at
+# your local inference server if it is not the default.
+Environment=TRIAGE_BACKEND=ollama
+Environment=TRIAGE_MODEL=granite4.1:8b
+# Patient-safety parameter: normalised confidence below this escalates to a
+# human. Raise it to escalate more, lower it to escalate less. Change with a
+# clinician's sign-off -- see docs/LIMITS.md.
+Environment=TRIAGE_LOW_CONF=0.35
+Environment=PYTHONUNBUFFERED=1
+
+ExecStart=/usr/bin/python3 -m src.triage.api --port 8773
+
+Restart=on-failure
+RestartSec=5s
+
+# PHI never leaves the host: this service only needs loopback, and it must not
+# be reachable from the network without an authenticating reverse proxy.
+# Add ``IPAddressAllow=localhost`` here once the proxy is in front of it.
+NoNewPrivileges=yes
+PrivateTmp=yes
+ProtectSystem=strict
+ProtectHome=yes
+ReadWritePaths=/opt/triage-openjev
+
+# The model holds several GB resident; do not let the OOM killer take it out
+# mid-shift without a restart.
+OOMPolicy=restart
+
+[Install]
+WantedBy=multi-user.target
