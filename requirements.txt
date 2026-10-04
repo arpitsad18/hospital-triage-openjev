@@ -1,4 +1,16 @@
 # Runtime
+#
+# NOTE: openjev 0.1.0 is NOT on PyPI — https://pypi.org/project/openjev/
+# currently serves 0.0.1, a placeholder with no `openjev.easy` / `.types` /
+# `.core` submodules. Installing it yields a confusing
+# `ModuleNotFoundError: No module named 'openjev.easy'`.
+#
+# Install the real engine from source:
+#   git clone https://github.com/lookski/openjev.git
+#   pip install ./openjev
+#
+# Verified working version: 0.1.0 (upstream default branch).
+# See docs/UPSTREAM.md.
 openjev>=0.1.0
 
 # Optional, for the pytest suite
