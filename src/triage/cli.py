@@ -34,11 +34,15 @@ if __package__ in (None, ""):
     from src.triage import questions as Q
     from src.triage.engine import TriageEngine
     from src.triage.engine import LOW_CONFIDENCE_THRESHOLD
+    from src.triage.engine import classify_failure as classifier
+    from src.triage.engine import failure_remedy as remedy
     from src.triage import redflags as RF
 else:
     from . import questions as Q
     from .engine import TriageEngine
     from .engine import LOW_CONFIDENCE_THRESHOLD
+    from .engine import classify_failure as classifier
+    from .engine import failure_remedy as remedy
     from . import redflags as RF
 
 DEFAULT_BACKEND = os.environ.get("TRIAGE_BACKEND", "ollama")
@@ -88,6 +92,7 @@ def cmd_doctor(args) -> int:
 
     print("  probing the model with a textbook ACS presentation...")
     failures = 0
+    kinds = {}
     for qid, expect_desc in probe:
         try:
             r = engine.answer_one(qid, state)
@@ -96,15 +101,22 @@ def cmd_doctor(args) -> int:
                   % (qid, str(r["label"]), r["confidence"], probs))
         except Exception as exc:
             failures += 1
-            print("    %-14s -> FAILED: %s: %s"
-                  % (qid, type(exc).__name__, str(exc)[:120]))
+            kind = classifier(exc)
+            kinds[kind] = kinds.get(kind, 0) + 1
+            print("    %-14s -> FAILED [%s]: %s: %s"
+                  % (qid, kind, type(exc).__name__, str(exc)[:120]))
 
     print()
     if failures:
         print("  RESULT: %d/%d probes failed." % (failures, len(probe)))
-        print("  Most common cause: the model writes a thinking preamble, so no")
-        print("  answer token lands in the top-logprobs window. Pick a model that")
-        print("  answers first, e.g. `ollama pull granite4.1:8b`.")
+        # Report each distinct cause once, worst-first, with its own remedy.
+        # The dominant class leads, because that is the thing to fix first.
+        order = sorted(kinds, key=lambda k: -kinds[k])
+        for kind in order:
+            print("  [%s x%d] %s"
+                  % (kind, kinds[kind],
+                     remedy(kind, backend=args.backend,
+                            base_url=getattr(args, "base_url", "") or "")))
         return 1
     print("  RESULT: model answers with usable probabilities. OK")
     print("  Run `validate` next to see agreement on labelled cases.")

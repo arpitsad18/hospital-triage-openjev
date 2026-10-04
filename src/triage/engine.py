@@ -26,6 +26,8 @@ from __future__ import annotations
 import os
 import socket
 import time
+import urllib.error
+import urllib.request as _urllib
 from dataclasses import dataclass, field
 from typing import Any, Dict, List, Optional
 
@@ -43,6 +45,94 @@ LOW_CONFIDENCE_THRESHOLD = float(os.environ.get("TRIAGE_LOW_CONF", "0.35"))
 # one of these is what turns into a mis-triage; the rest are documentation).
 CRITICAL_QUESTIONS = ("acuity", "esi", "needs_consult",
                       "is_emergency_admission", "suicidal_risk")
+
+
+# ---------------------------------------------------------------------------
+# failure classification
+# ---------------------------------------------------------------------------
+# `doctor` has to tell the operator which failure it is seeing, because the
+# remedy is different for each. Reporting "the model writes a thinking
+# preamble" when the server is simply not running sends people off to swap
+# models for an afternoon. `unreachable` and `rejected` are transport faults,
+# not model-quality faults, and the repair is stated explicitly.
+FAILURE_UNREACHABLE = "unreachable"   # nothing is listening / route down
+FAILURE_REJECTED = "rejected"         # HTTP 4xx/5xx from a live server
+FAILURE_DEGENERATE = "degenerate"     # logprobs present, but no label mass
+FAILURE_CONTRACT = "contract"         # server answered, unexpected shape
+FAILURE_QUESTION = "question"         # one question could not be answered
+
+# Exception type names that mean "the response shape was not what we read".
+_CONTRACT_EXC = ("KeyError", "IndexError", "TypeError", "ValueError",
+                 "AttributeError", "JSONDecodeError")
+
+
+def classify_failure(exc: BaseException) -> str:
+    """Map an exception from the model call onto a coarse failure class.
+
+    Ordering matters: an HTTPError is *also* an OSError, so the transport
+    checks run before the generic ones, and a message-inspecting fallback
+    runs last of all. The classes are deliberately coarse -- a caller needs
+    the remedy, not the traceback.
+    """
+    if isinstance(exc, urllib.error.HTTPError):
+        return FAILURE_REJECTED
+    # urllib wraps a dead port as URLError(ConnectionRefusedError).
+    if isinstance(exc, urllib.error.URLError):
+        return FAILURE_UNREACHABLE
+    if isinstance(exc, (ConnectionError, socket.gaierror)):
+        return FAILURE_UNREACHABLE
+    if isinstance(exc, (TimeoutError, socket.timeout)):
+        return FAILURE_UNREACHABLE
+    if type(exc).__name__ in _CONTRACT_EXC:
+        # The forward pass raises RuntimeError for "no label mass" and for
+        # "answer token outside the window": the server replied with a shape
+        # we cannot score, which is not the same as the network being down.
+        return FAILURE_CONTRACT
+    text = str(exc).lower()
+    if ("logprobs window identified no label" in text
+            or "probability mass" in text):
+        return FAILURE_DEGENERATE
+    if ("connection" in text or "refused" in text or "timed out" in text
+            or "unreachable" in text or "no route" in text):
+        return FAILURE_UNREACHABLE
+    if "http error" in text or "status" in text or "unauthorized" in text:
+        return FAILURE_REJECTED
+    if isinstance(exc, RuntimeError):
+        return FAILURE_CONTRACT
+    return FAILURE_QUESTION
+
+
+def failure_remedy(kind, backend="", base_url=""):
+    """A one-line, actionable remedy for a failure class.
+
+    Model-quality advice is only offered where the model is actually the
+    suspect; a transport fault never recommends swapping models.
+    """
+    where = (" at %s" % base_url) if base_url else ""
+    if kind == FAILURE_UNREACHABLE:
+        if backend == "ollama":
+            return ("no server is listening%s -- start it with `ollama serve`,"
+                    " then `ollama pull granite4.1:8b`. This is not a model"
+                    " quality problem." % where)
+        if backend in ("lmstudio", "lm_studio", "openai"):
+            return ("no server is listening%s -- start the LM Studio local"
+                    " server and load a model. This is not a model quality"
+                    " problem." % where)
+        return ("no server is listening%s -- start the backend. This is not a"
+                " model quality problem." % where)
+    if kind == FAILURE_REJECTED:
+        return ("the server answered but rejected the request%s -- check the"
+                " model name, the --api-key, and the backend's model listing."
+                % where)
+    if kind == FAILURE_DEGENERATE:
+        return ("the server replied but no label probability landed in the"
+                " logprobs window -- pick a model that answers first, e.g."
+                " `ollama pull granite4.1:8b`.")
+    if kind == FAILURE_CONTRACT:
+        return ("the server replied with a shape the scorer could not read --"
+                " confirm the endpoint is OpenAI-compatible and returns"
+                " `logprobs` with `top_logprobs`.")
+    return "one question could not be answered; see the detail above."
 
 
 def _token_usage(result: Dict[str, Any]) -> Dict[str, Optional[int]]:
